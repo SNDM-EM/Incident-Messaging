@@ -1,196 +1,289 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Incident Message Builder – v1</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f4f4f4;
-      margin: 0;
-      padding: 20px;
-    }
+<meta charset="UTF-8">
+<title>Network Rail – Incident Message Builder</title>
 
-    h2 {
-      margin-top: 30px;
-    }
+<style>
+:root {
+  --nr-blue: #003a8f;
+  --nr-grey: #f2f4f7;
+  --nr-border: #d0d5dd;
+  --nr-text: #101828;
+  --nr-muted: #667085;
+  --nr-red: #c62828;
+  --nr-black: #000000;
+}
 
-    .section {
-      background: #fff;
-      padding: 15px;
-      margin-bottom: 20px;
-      border-radius: 6px;
-    }
+* { box-sizing: border-box; }
 
-    .buttons button {
-      margin: 5px;
-      padding: 8px 12px;
-      cursor: pointer;
-    }
+body {
+  margin: 0;
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: var(--nr-grey);
+  color: var(--nr-text);
+}
 
-    .buttons button.active {
-      background: #005ea5;
-      color: #fff;
-    }
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+}
 
-    textarea, input, select {
-      width: 100%;
-      padding: 8px;
-      margin-top: 8px;
-    }
+h1 {
+  font-size: 26px;
+  margin-bottom: 6px;
+}
 
-    #preview {
-      background: #e8f5e9;
-      padding: 15px;
-      white-space: pre-wrap;
-      border-radius: 6px;
-    }
+.subtitle {
+  color: var(--nr-muted);
+  margin-bottom: 24px;
+}
 
-    .banner {
-      text-align: center;
-      padding: 15px;
-      color: #fff;
-      font-weight: bold;
-      border-radius: 6px;
-    }
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
 
-    .red {
-      background: #c62828;
-    }
+.card {
+  background: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  border: 1px solid var(--nr-border);
+}
 
-    .black {
-      background: #000;
-    }
-  </style>
+.card h2 {
+  font-size: 18px;
+  margin-bottom: 12px;
+}
+
+/* Inputs */
+label {
+  font-size: 13px;
+  font-weight: 600;
+  margin-top: 14px;
+  display: block;
+}
+
+input, textarea, select {
+  width: 100%;
+  margin-top: 6px;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid var(--nr-border);
+  font-size: 14px;
+}
+
+textarea { resize: vertical; }
+
+/* Button groups */
+.button-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.button-group button {
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--nr-border);
+  background: #fff;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.button-group button.active {
+  background: var(--nr-blue);
+  color: #fff;
+  border-color: var(--nr-blue);
+}
+
+/* Severity */
+.severity button {
+  font-weight: 600;
+}
+
+.severity .red.active {
+  background: var(--nr-red);
+  border-color: var(--nr-red);
+}
+
+.severity .black.active {
+  background: var(--nr-black);
+  border-color: var(--nr-black);
+}
+
+/* Preview */
+.preview-card {
+  grid-column: span 2;
+}
+
+.banner {
+  padding: 14px;
+  color: #fff;
+  font-weight: 700;
+  border-radius: 6px;
+  margin-bottom: 12px;
+}
+
+.banner.red { background: var(--nr-red); }
+.banner.black { background: var(--nr-black); }
+
+.preview {
+  white-space: pre-wrap;
+  font-size: 14px;
+  line-height: 1.5;
+  background: #f9fafb;
+  border: 1px solid var(--nr-border);
+  padding: 16px;
+  border-radius: 6px;
+}
+
+/* Generate */
+.generate {
+  margin-top: 16px;
+  background: var(--nr-blue);
+  color: #fff;
+  border: none;
+  padding: 12px;
+  border-radius: 6px;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.generate:hover {
+  opacity: 0.9;
+}
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+  .preview-card {
+    grid-column: span 1;
+  }
+}
+</style>
 </head>
+
 <body>
+<div class="container">
 
-<h1>Incident Message Builder (v1)</h1>
+<h1>Incident Message Builder</h1>
+<div class="subtitle">Network Rail – Red / Black Incident Communications</div>
 
-<div class="section">
-  <h2>1. Severity & Ownership</h2>
-  <div class="buttons">
-    <button onclick="setSeverity('Red')">Red Incident</button>
-    <button onclick="setSeverity('Black')">Black Incident</button>
-  </div>
+<div class="grid">
 
-  <label>Managed by</label>
-  <select id="managedBy">
-    <option value="">-- Select --</option>
-    <option>East Midlands Route</option>
-    <option>York</option>
-    <option>Sussex</option>
-    <option>Rugby</option>
-  </select>
+<!-- LEFT COLUMN -->
+<div class="card">
+<h2>Incident Control</h2>
 
-  <label>Incident Title</label>
-  <input id="incidentTitle" placeholder="e.g. TC Failure – St Albans Centre Sidings">
+<label>Severity</label>
+<div class="button-group severity">
+  <button class="red" onclick="setSeverity(this,'Red')">Red Incident</button>
+  <button class="black" onclick="setSeverity(this,'Black')">Black Incident</button>
 </div>
 
-<div class="section">
-  <h2>2. Incident Description</h2>
-  <textarea id="description" rows="4"
-    placeholder="Brief factual description of the incident..."></textarea>
+<label>Managed by</label>
+<select id="managedBy">
+  <option value="">Select managing route</option>
+  <option>East Midlands Route</option>
+  <option>York</option>
+  <option>Sussex</option>
+  <option>Rugby</option>
+</select>
+
+<label>Incident title</label>
+<input id="title" placeholder="TC Failure – St Albans Centre Sidings">
+
+<label>Incident description</label>
+<textarea id="description" rows="4"></textarea>
 </div>
 
-<div class="section">
-  <h2>3. Command Structure (Mandatory)</h2>
-  <label>Rail Incident Commander</label>
-  <input id="ric" placeholder="e.g. SNDM Derby">
+<!-- RIGHT COLUMN -->
+<div class="card">
+<h2>Command & Impact</h2>
 
-  <label>Tactical Incident Commander</label>
-  <input id="tic" placeholder="e.g. RCM Derby">
+<label>Rail Incident Commander</label>
+<input id="ric" placeholder="SNDM Derby">
+
+<label>Tactical Incident Commander</label>
+<input id="tic" placeholder="RCM Derby">
+
+<label>Service groups affected</label>
+<div class="button-group" id="services">
+  <button onclick="toggle(this,'services')">East Midlands Inter Urban</button>
+  <button onclick="toggle(this,'services')">St Pancras – Kettering / Corby</button>
+  <button onclick="toggle(this,'services')">Thameslink North (MML)</button>
+  <button onclick="toggle(this,'services')">Freight</button>
 </div>
 
-<div class="section">
-  <h2>4. Service Groups Affected</h2>
-  <div class="buttons">
-    <button onclick="toggleService(this)">East Midlands Inter Urban</button>
-    <button onclick="toggleService(this)">St Pancras – Kettering / Corby</button>
-    <button onclick="toggleService(this)">Thameslink North (MML)</button>
-    <button onclick="toggleService(this)">Freight</button>
-  </div>
+<label>Response deployed</label>
+<div class="button-group" id="response">
+  <button onclick="toggle(this,'response')">MOM</button>
+  <button onclick="toggle(this,'response')">S&amp;T</button>
+  <button onclick="toggle(this,'response')">PWay</button>
+  <button onclick="toggle(this,'response')">BTP</button>
 </div>
 
-<div class="section">
-  <h2>5. Stranded Trains</h2>
-  <select id="stranded">
-    <option>None</option>
-    <option>Yes – details to follow</option>
-  </select>
+<button class="generate" onclick="generate()">Generate Incident Message</button>
 </div>
 
-<div class="section">
-  <h2>6. Response</h2>
-  <div class="buttons">
-    <button onclick="toggleResponse(this)">MOM</button>
-    <button onclick="toggleResponse(this)">S&T</button>
-    <button onclick="toggleResponse(this)">PWay</button>
-    <button onclick="toggleResponse(this)">BTP</button>
-  </div>
+<!-- PREVIEW -->
+<div class="card preview-card">
+<h2>Generated Message</h2>
+<div id="banner" class="banner red">Awaiting incident details</div>
+<div id="output" class="preview"></div>
 </div>
 
-<div class="section">
-  <button onclick="generate()">Generate Message</button>
 </div>
-
-<div class="section">
-  <h2>Generated Message Preview</h2>
-  <div id="banner" class="banner">No incident selected</div>
-  <div id="preview"></div>
 </div>
 
 <script>
-  let severity = "";
-  let services = [];
-  let responses = [];
+let severity = "Red";
+let selected = { services: [], response: [] };
 
-  function setSeverity(level) {
-    severity = level;
-  }
+function setSeverity(btn, level) {
+  severity = level;
+  document.querySelectorAll(".severity button").forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+}
 
-  function toggleService(btn) {
-    btn.classList.toggle("active");
-    const text = btn.innerText;
-    services.includes(text)
-      ? services = services.filter(s => s !== text)
-      : services.push(text);
-  }
+function toggle(btn, group) {
+  btn.classList.toggle("active");
+  const text = btn.innerText;
+  const list = selected[group];
+  selected[group] = list.includes(text)
+    ? list.filter(x => x !== text)
+    : [...list, text];
+}
 
-  function toggleResponse(btn) {
-    btn.classList.toggle("active");
-    const text = btn.innerText;
-    responses.includes(text)
-      ? responses = responses.filter(r => r !== text)
-      : responses.push(text);
-  }
+function generate() {
+  const managedBy = document.getElementById("managedBy").value;
+  const title = document.getElementById("title").value;
+  const desc = document.getElementById("description").value;
+  const ric = document.getElementById("ric").value;
+  const tic = document.getElementById("tic").value;
 
-  function generate() {
-    const managedBy = document.getElementById("managedBy").value;
-    const title = document.getElementById("incidentTitle").value;
-    const desc = document.getElementById("description").value;
-    const ric = document.getElementById("ric").value;
-    const tic = document.getElementById("tic").value;
-    const stranded = document.getElementById("stranded").value;
+  const banner = document.getElementById("banner");
+  banner.className = `banner ${severity === "Black" ? "black" : "red"}`;
+  banner.innerText = `${severity} INCIDENT – Managed by ${managedBy}`;
 
-    const banner = document.getElementById("banner");
-    banner.className = "banner " + (severity === "Black" ? "black" : "red");
-    banner.innerText = `${severity} Incident | Managed by: ${managedBy}`;
+  let text = "";
+  text += `${title}\n\n`;
+  text += `${desc}\n\n`;
+  text += `Command Structure\n`;
+  text += `Rail Incident Commander: ${ric}\n`;
+  text += `Tactical Incident Commander: ${tic}\n\n`;
+  text += `Service Groups Affected\n`;
+  text += selected.services.length ? selected.services.join("\n") : "None identified";
+  text += `\n\nResponse\n`;
+  text += selected.response.length ? selected.response.join(", ") : "TBC";
 
-    let msg = "";
-    msg += title + "\n\n";
-    msg += desc + "\n\n";
-    msg += "Command Structure\n";
-    msg += "Rail Incident Commander: " + ric + "\n";
-    msg += "Tactical Incident Commander: " + tic + "\n\n";
-    msg += "Service Groups Affected\n";
-    msg += services.length ? services.join("\n") : "None identified";
-    msg += "\n\nStranded Trains\n" + stranded + "\n\n";
-    msg += "Response\n";
-    msg += responses.length ? responses.join(", ") : "TBC";
-
-    document.getElementById("preview").innerText = msg;
-  }
+  document.getElementById("output").innerText = text;
+}
 </script>
 
 </body>
