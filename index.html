@@ -854,11 +854,37 @@ function formatTitle(raw) {
   return `${parts[0]} - ${parts[1]} - ${parts[2]}`;
 }
 
-function formatTimeInput(val){
-  const v = (val || "").trim();
-  // If user enters 4 digits like 2330, convert to 23:30
-  if (/^\d{4}$/.test(v)) return v.slice(0,2) + ":" + v.slice(2);
-  return v;
+function formatTimeInput(value){
+  if (value === null || value === undefined) return "";
+  const original = String(value);
+
+  // If user has typed any letters, keep exactly what they typed (including spaces)
+  // e.g. "on site", "arrived", "en route"
+  if (/[A-Za-z]/.test(original)) return original;
+
+  const raw = original.trim();
+  if (!raw) return "";
+
+  // Normalize common separators for numeric formatting
+  const cleaned = raw.replace(/\s+/g, "");
+
+  // If already looks like HH:MM or H:MM, normalize padding
+  const m = cleaned.match(/^(\d{1,2}):(\d{1,2})$/);
+  if (m) {
+    const hh = m[1].padStart(2, "0");
+    const mm = m[2].padStart(2, "0");
+    return `${hh}:${mm}`;
+  }
+
+  // If pure digits, format 3-4 digits as time (e.g. 930 -> 09:30, 2330 -> 23:30)
+  if (/^\d+$/.test(cleaned)) {
+    if (cleaned.length === 4) return `${cleaned.slice(0,2)}:${cleaned.slice(2)}`;
+    if (cleaned.length === 3) return `0${cleaned.slice(0,1)}:${cleaned.slice(1)}`;
+    return cleaned; // 1-2 digits: hour only
+  }
+
+  // Otherwise, keep whatever they typed (e.g. "TBC", "ASAP") including spaces they entered
+  return original;
 }
 
 
@@ -1806,16 +1832,36 @@ async function copyUpdateTextOnly(){
 
 async function copyUpdateRich(){
   const toast = document.getElementById("toastUpdate");
-  const banner = document.getElementById("updatePreviewBanner");
-  const text = buildUpdateText();
+  const text = buildUpdateText ? buildUpdateText() : (document.getElementById("updateOutput")?.textContent || "");
+
+  // Prefer the actual rendered banner in the update preview; fallback to UPDATE_BANNER constant
+  const bannerEl = document.getElementById("updatePreviewBanner") || document.getElementById("updateBanner") || document.getElementById("previewBanner");
+  const bannerSrc = (bannerEl && bannerEl.src) ? bannerEl.src : (typeof UPDATE_BANNER !== "undefined" ? UPDATE_BANNER : "");
+
   try {
-    const htmlContent = `<img src="${banner?.src || UPDATE_BANNER}" /><pre>${text}</pre>`;
-    const blob = new Blob([htmlContent], { type: "text/html" });
-    const data = [new ClipboardItem({ "text/html": blob })];
+    // HTML copy: image + preformatted text
+    const htmlContent =
+      `<div>` +
+      (bannerSrc ? `<img src="${bannerSrc}" style="max-width:100%;height:auto;display:block;margin:0 0 8px 0;" />` : ``) +
+      `<pre style="white-space:pre-wrap;font-family:inherit;margin:0;">${escapeHtml(text)}</pre>` +
+      `</div>`;
+
+    const data = [
+      new ClipboardItem({
+        "text/html": new Blob([htmlContent], { type: "text/html" }),
+        "text/plain": new Blob([text], { type: "text/plain" }),
+      }),
+    ];
     await navigator.clipboard.write(data);
-    if (toast) { toast.className = "toast"; toast.textContent = "Copied with banner."; }
-  } catch(e) {
-    if (toast) { toast.className = "toast warn"; toast.textContent = "Copy with banner failed (browser permissions)."; }
+    if (toast) { toast.className = "toast"; toast.textContent = "Copied update with banner."; }
+  } catch (e) {
+    // Fallback to text only
+    try {
+      await navigator.clipboard.writeText(text);
+      if (toast) { toast.className = "toast warn"; toast.textContent = "Copied text only (banner not supported by this app)."; }
+    } catch (e2) {
+      if (toast) { toast.className = "toast warn"; toast.textContent = "Copy failed."; }
+    }
   }
 }
 
@@ -2241,6 +2287,15 @@ function renderCustomRoles(){
   });
 }
 
+
+function escapeHtml(str){
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
 </script>
 </body>
 </html>
