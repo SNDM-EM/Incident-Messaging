@@ -1,8 +1,9 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
 <title>Network Rail - Incident Message Builder</title>
 <style>
 .time-split{display:flex;align-items:center;gap:8px;}
@@ -227,254 +228,309 @@ textarea{resize:vertical}
 }
 .op-row label{ margin:0; }
 .op-row input[type="number"]{ width:90px; justify-self:end; }
+
+
+/* Compact layout override */
+.left-col .card {
+  padding: 12px !important;
+  margin-bottom: 12px !important;
+}
+
+.left-col .card label {
+  margin-top: 6px !important;
+  margin-bottom: 2px !important;
+}
+
+.left-col .card textarea,
+.left-col .card input[type="text"],
+.left-col .card input[type="number"],
+.left-col .card select {
+  margin-bottom: 6px !important;
+}
+
+.left-col .card .section-toggle {
+  margin: 6px 0 !important;
+}
+
+.left-col .card hr {
+  margin: 10px 0 !important;
+}
+
+
+/* ULTRA COMPACT OVERRIDE */
+.main-grid {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 14px !important;
+  align-items: start !important;
+}
+
+.left-col {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 10px !important;
+}
+
+.left-col .card {
+  padding: 8px 10px !important;
+  margin: 0 !important;
+}
+
+.left-col .card label {
+  margin: 4px 0 2px 0 !important;
+}
+
+.left-col .card textarea,
+.left-col .card input,
+.left-col .card select {
+  margin: 2px 0 6px 0 !important;
+}
+
+.left-col .card .section-toggle {
+  margin: 4px 0 !important;
+}
+
+.left-col .card hr {
+  margin: 8px 0 !important;
+}
+
+/* Prevent any card stretching full width */
+.left-col .card {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+
+
+/* Subtle severity-themed background */
+body{
+  background: linear-gradient(135deg, #f4f6f8, #eef1f4);
+}
+
+body.sev-red{
+  background: linear-gradient(135deg, #fff5f5, #ffe9e9);
+}
+
+body.sev-black{
+  background: linear-gradient(135deg, #f3f3f3, #e6e6e6);
+}
+
+/* Keep header clean black */
+.header, .topbar, .app-header{
+  background: #111 !important;
+  color: #fff !important;
+  border-bottom: 1px solid rgba(0,0,0,0.15) !important;
+}
+
+/* Softer cards */
+.card{
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08) !important;
+}
+
+.card{
+  box-shadow: 0 10px 24px rgba(0,0,0,0.12) !important;
+}
+
+/* Buttons slightly more premium */
+button, .btn{
+  box-shadow: 0 6px 14px rgba(0,0,0,0.12);
+}
+
 </style>
 </head>
 <body>
 <div class="container">
-  <div class="topbar">
-    <div class="brand">
-      <div class="logo" aria-label="Network Rail logo">
-        <!-- Simple inline mark (placeholder); replace with official asset later -->
-        <svg width="28" height="28" viewBox="0 0 64 64" aria-hidden="true">
-          <defs>
-            <linearGradient id="g" x1="0" x2="1">
-              <stop offset="0" stop-color="#f47b20"/>
-              <stop offset="1" stop-color="#003a8f"/>
-            </linearGradient>
-          </defs>
-          <rect x="6" y="6" width="52" height="52" rx="14" fill="url(#g)"/>
-          <path d="M18 40V24h6l10 14V24h6v16h-6L24 26v14z" fill="#fff"/>
-        </svg>
-      </div>
-      <div>
-        <h1>Incident Message Builder</h1>
-        <div class="sub">Network Rail - Red / Black incident communications</div>
-        <div class="orange-strip"></div>
-      </div>
-    </div>
-
-    <div class="tabs" role="tablist" aria-label="Incident lifecycle tabs">
-      <button class="tab active" id="tab-incident" type="button" onclick="setTab('incident')">Initial Incident message</button>
-      <button class="tab" id="tab-update" type="button" onclick="setTab('update')">Incident update</button>
-      <button class="tab" id="tab-nwr-btn" type="button" onclick="setTab('nwr')">Normal working resumed</button>
-      <button class="tab" id="tab-recovery" type="button" onclick="setTab('recovery')">Service Recovery</button>
-    </div>
-  </div>
-
-  <div class="tab-content" id="tab-initial" data-tab="incident" style="display:block;">
-<div class="main-grid">
-  <div class="left-col">
+<div class="topbar">
+<div class="brand">
+<div aria-label="Network Rail logo" class="logo">
+<!-- Simple inline mark (placeholder); replace with official asset later -->
+<svg aria-hidden="true" height="28" viewbox="0 0 64 64" width="28">
+<defs>
+<lineargradient id="g" x1="0" x2="1">
+<stop offset="0" stop-color="#f47b20"></stop>
+<stop offset="1" stop-color="#003a8f"></stop>
+</lineargradient>
+</defs>
+<rect fill="url(#g)" height="52" rx="14" width="52" x="6" y="6"></rect>
+<path d="M18 40V24h6l10 14V24h6v16h-6L24 26v14z" fill="#fff"></path>
+</svg>
+</div>
+<div>
+<h1>Incident Message Builder</h1>
+<div class="sub">Network Rail - Red / Black incident communications</div>
+<div class="orange-strip"></div>
+</div>
+</div>
+<div aria-label="Incident lifecycle tabs" class="tabs" role="tablist">
+<button class="tab active" id="tab-incident" onclick="setTab('incident')" type="button">Initial Incident message</button>
+<button class="tab" id="tab-update" onclick="setTab('update')" type="button">Incident update</button>
+<button class="tab" id="tab-nwr-btn" onclick="setTab('nwr')" type="button">Normal working resumed</button>
+<button class="tab" id="tab-recovery" onclick="setTab('recovery')" type="button">Service Recovery</button>
+</div>
+</div>
+<div class="tab-content" data-tab="incident" id="tab-initial" style="display:block;">
+<div class="main-grid"><div class="left-col">
 <div class="card">
-      <h2>Incident Control</h2>
-
-      <label>Severity</label>
-      <div class="button-group severity">
-        <button class="red active" onclick="setSeverity(this,'Red')" type="button">Red Incident</button>
-        <button class="black" onclick="setSeverity(this,'Black')" type="button">Black Incident</button>
-      </div>
-
-      <label>Managed by</label>
-      <select id="managedBy">
-        <option value="">Select managing route</option>
-        <option>East Midlands Route</option>
-        <option>York</option>
-        <option>Sussex</option>
-        <option>Rugby</option>
-        <option>Kent</option>
-      </select>
-
-      <label>Incident title (free text)</label>
-      <input id="title" placeholder="e.g. TC Failure, St Albans Centre Sidings, 517/527">
-      <div class="help">On generate, title will be formatted to: Type of failure - location - equipment (where possible).</div>
-
-      <label>Brief description</label>
-      <textarea id="description" rows="5" placeholder="Brief factual description of the incident..."></textarea>
-    </div>
-
+<h2>Incident Control</h2>
+<label>Severity</label>
+<div class="button-group severity">
+<button class="red active" onclick="setSeverity(this,'Red')" type="button">Red Incident</button>
+<button class="black" onclick="setSeverity(this,'Black')" type="button">Black Incident</button>
+</div>
+<label>Managed by</label>
+<select id="managedBy">
+<option value="">Select managing route</option>
+<option>East Midlands Route</option>
+<option>York</option>
+<option>Sussex</option>
+<option>Rugby</option>
+<option>Kent</option>
+</select>
+<label>Incident title (free text)</label>
+<input id="title" placeholder="e.g. TC Failure, St Albans Centre Sidings, 517/527"/>
+<div class="help">On generate, title will be formatted to: Type of failure - location - equipment (where possible).</div>
+<label>Brief description</label>
+<textarea id="description" placeholder="Brief factual description of the incident..." rows="5"></textarea>
+</div>
 <div class="card" id="serviceCard">
-      <h2>Service, Stranded Trains & Response</h2>
-
-      <div class="section-toggle">
-        <input id="skipServiceSection" type="checkbox">
-        <div>
-          <div class="label">Not required for this incident</div>
-          <div class="hint">Greys out this section and removes it from the generated message.</div>
-        </div>
-      </div>
-      <div id="serviceSectionBody">
-      <div class="section-toggle" style="margin-top:6px;">
-        <input type="checkbox" id="useServiceGroups">
-        <label for="useServiceGroups" style="margin:0;">Service groups</label>
-      </div>
-
-      <div id="serviceGroupsSection">
+<h2>Service, Stranded Trains &amp; Response</h2>
+</div>
+<div id="serviceSectionBody">
+<div class="section-toggle" style="margin-top:6px;">
+<input id="useServiceGroups" type="checkbox"/>
+<label for="useServiceGroups" style="margin:0;">Service groups</label>
+</div>
+<div id="serviceGroupsSection">
 <label>Service groups area</label>
-      <select id="serviceArea" onchange="onServiceAreaChange()">
-        <option value="DNL">Derby / Nottingham / Leicester</option>
-        <option value="LSS">Lincoln / Sleaford / Skegness</option>
-        <option value="BED">Bedford South</option>
-      </select>
-
-      <div class="service-area" id="serviceAreaContainer" aria-label="Service groups affected selection">
-      </div>
+<select id="serviceArea" onchange="onServiceAreaChange()">
+<option value="DNL">Derby / Nottingham / Leicester</option>
+<option value="LSS">Lincoln / Sleaford / Skegness</option>
+<option value="BED">Bedford South</option>
+</select>
+<div aria-label="Service groups affected selection" class="service-area" id="serviceAreaContainer">
 </div>
-      <div class="service-subtle">All services are selected by default. Deselect any that are not affected. Switching area will reset selections.</div>
 </div>
-<div class="section-toggle">
-        <input type="checkbox" id="useContingencyInit">
-        <label for="useContingencyInit" style="margin:0;">Include contingency plan</label>
-      </div>
-      <label>Contingency plan</label>
-      <textarea id="contingencyTextInit" rows="2" placeholder="Enter contingency plan details..."></textarea>
-
-
-      <label>Stranded Trains</label>
-      <div class="stranded-box">
-        <div style="display:flex;gap:10px;align-items:center;margin:2px 0 10px 0;">
-          <input id="useStranded" type="checkbox" style="width:auto;margin:0;">
-          <div style="font-weight:900;font-size:12px;">Stranded Trains</div>
-        </div>
-
-        <label style="margin-top:0;">Headcodes / number of trains (free text)</label>
-        <input id="strandedFree" placeholder="e.g. 1B23 (1x 12-car) stranded Up Fast; 2 trains affected">
-        <div class="help">Use this for headcodes + quantity. Options below remain visible to show they were considered.</div>
-
-        <div class="stranded-options" id="strandedOptions"></div>
-      </div>
-
-      <label>Response deployed</label>
-      <div class="response-area">
-        <div class="button-group" id="responseButtons">
-          <button onclick="toggleResponseChip(this,'MOM')" type="button">MOM</button>
-          <button onclick="toggleResponseChip(this,'ERU')" type="button">ERU</button>
-          <button onclick="toggleResponseChip(this,'BTP')" type="button">BTP</button>
-          <button onclick="toggleResponseChip(this,'S&T')" type="button">S&amp;T</button>
-          <button onclick="toggleResponseChip(this,'PWay')" type="button">PWay</button>
-          <button onclick="toggleResponseChip(this,'Off Track')" type="button">Off Track</button>
-          <button onclick="toggleResponseChip(this,'OLE')" type="button">OLE</button>
-          <button onclick="toggleResponseChip(this,'Telecoms')" type="button">Telecoms</button>
-          <button onclick="toggleResponseChip(this,'Other')" type="button">Other</button>
-        </div>
-        <div class="response-eta-list" id="etaContainer"></div>
-        <div class="help">Selecting a response option will show an optional ETA field.</div>
-      </div>
-
-      
-    </div>
-
-<div class="card" id="commandCard">
-      <h2>Command Structure</h2>
-      <div class="role-grid" id="rolesContainer" aria-label="Command Structure roles"></div>
-      <div class="help">Select roles to include. Strategic Lead and Tactical Lead are mandatory (must be selected and named).</div>
-      <div id="customRoles" style="margin-top:10px;"></div>
-      <div class="actions" style="margin-top:10px;justify-content:flex-start;">
-        <button class="primary secondary" type="button" onclick="addCustomRole()">Add other role</button>
-      </div>
-    </div>
-
-
-
-
+<div class="service-subtle">All services are selected by default. Deselect any that are not affected. Switching area will reset selections.</div>
+</div><div class="section-toggle">
+<input id="useContingencyInit" type="checkbox"/>
+<label for="useContingencyInit" style="margin:0;">Include contingency plan</label>
+</div>
+<label style="margin-top:6px;">Contingency plan</label>
+<textarea id="contingencyTextInit" placeholder="Enter contingency plan details..." rows="2"></textarea><label>Stranded Trains</label><div class="stranded-box">
+<div style="display:flex;gap:10px;align-items:center;margin:2px 0 10px 0;">
+<input id="useStranded" style="width:auto;margin:0;" type="checkbox"/>
+<div style="font-weight:900;font-size:12px;">Stranded Trains</div>
+</div>
+<label style="margin-top:0;">Headcodes / number of trains (free text)</label>
+<input id="strandedFree" placeholder="e.g. 1B23 (1x 12-car) stranded Up Fast; 2 trains affected"/>
+<div class="help">Use this for headcodes + quantity. Options below remain visible to show they were considered.</div>
+<div class="stranded-options" id="strandedOptions"></div>
+</div><label>Response deployed</label><div class="response-area">
+<div class="button-group" id="responseButtons">
+<button onclick="toggleResponseChip(this,'MOM')" type="button">MOM</button>
+<button onclick="toggleResponseChip(this,'ERU')" type="button">ERU</button>
+<button onclick="toggleResponseChip(this,'BTP')" type="button">BTP</button>
+<button onclick="toggleResponseChip(this,'S&amp;T')" type="button">S&amp;T</button>
+<button onclick="toggleResponseChip(this,'PWay')" type="button">PWay</button>
+<button onclick="toggleResponseChip(this,'Off Track')" type="button">Off Track</button>
+<button onclick="toggleResponseChip(this,'OLE')" type="button">OLE</button>
+<button onclick="toggleResponseChip(this,'Telecoms')" type="button">Telecoms</button>
+<button onclick="toggleResponseChip(this,'Other')" type="button">Other</button>
+</div>
+<div class="response-eta-list" id="etaContainer"></div>
+<div class="help">Selecting a response option will show an optional ETA field.</div>
+</div><div class="card" id="commandCard">
+<h2>Command Structure</h2>
+<div aria-label="Command Structure roles" class="role-grid" id="rolesContainer"></div>
+<div class="help">Select roles to include. Strategic Lead and Tactical Lead are mandatory (must be selected and named).</div>
+<div id="customRoles" style="margin-top:10px;"></div>
+<div class="actions" style="margin-top:10px;justify-content:flex-start;">
+<button class="primary secondary" onclick="addCustomRole()" type="button">Add other role</button>
+</div>
+</div></div><div class="right-col">
+<div class="card preview-card">
+<h2>Live message preview</h2>
+<div class="preview-wrap">
+<img alt="Incident alert banner" class="preview-banner" id="previewBanner"/>
+<div class="preview-body" id="output"></div>
+</div>
+</div>
+</div></div>
 
 <div class="card" style="padding:12px;border-left:6px solid var(--nr-orange);">
-  <div class="actions" style="margin-top:0;justify-content:flex-end;">
-    <button class="primary secondary" onclick="copyRich()" type="button">Copy banner</button>
-          <button class="primary secondary" onclick="clearAll()" type="button">Clear message</button>
-    <button class="primary secondary" onclick="copyTextOnly()" type="button">Copy text</button>
-  </div>
-  <div class="toast" id="toast"></div>
+<div class="actions" style="margin-top:0;justify-content:flex-end;">
+<button class="primary secondary" onclick="copyRich()" type="button">Copy banner</button>
+<button class="primary secondary" onclick="clearAll()" type="button">Clear message</button>
+<button class="primary secondary" onclick="copyTextOnly()" type="button">Copy text</button>
 </div>
-
-
-  
-
-  </div>
+<div class="toast" id="toast"></div>
+</div>
+</div>
+</div>
+<div class="tab-content" data-tab="update" id="tab-update-panel" style="display:none;">
+<div class="main-grid">
+<div class="left-col">
+<div class="card" style="border-left:6px solid var(--nr-orange);">
+<h2>Incident update</h2>
+<div class="help">Use this tab to publish a written update against the same incident title, including contingency being applied and updated response ETAs.</div>
+<label>Incident title (from initial message)</label>
+<input disabled="" id="updateTitle" placeholder="(auto-filled from Initial Incident message)"/>
+<div class="help">This is automatically pulled from the Initial Incident message title field.</div>
+<label>Update narrative (free text)</label>
+<textarea id="updateNarrative" placeholder="Write a concise incident update for senior stakeholders..." rows="7"></textarea>
+<div class="section-toggle" style="margin-top:10px;">
+<input id="useStrategicPriorities" type="checkbox"/>
+<label for="useStrategicPriorities" style="margin:0;">Include strategic priorities</label>
+</div>
+<label>Strategic priorities (free text)</label>
+<textarea id="strategicPriorities" placeholder="Include 2-4 strategic level priorities ()." rows="4"></textarea>
+<div class="help">Include 2-4 strategic level priorities ().</div>
+<div class="section-toggle">
+<input id="useContingencyUpdate" type="checkbox"/>
+<label for="useContingencyUpdate" style="margin:0;">Include contingency plan</label>
+</div>
+<label>Contingency plan</label>
+<textarea id="contingencyTextUpdate" placeholder="Enter contingency plan details..." rows="2"></textarea>
+<label>Priority plan (free text)</label>
+<textarea id="priorityPlan" placeholder="Enter the priority plan..." rows="4"></textarea>
+<div class="help">Will be included with a bold WhatsApp heading.</div>
+<label>Milestone plan (free text)</label>
+<textarea id="milestonePlan" placeholder="Enter the milestone plan..." rows="4"></textarea>
+<div class="help">Will be included with a bold WhatsApp heading.</div>
+<label>Response staff - ETA</label>
+<div class="response-area">
+<div class="help" style="margin-top:0;">Pre-selected from the Initial Incident message. Add additional response below if required. Initial ETAs are pulled through but can be edited.</div>
+<div aria-label="Response staff selection for update" class="button-group" id="updateResponseButtons"></div>
+<div class="response-eta-list" id="updateEtaContainer"></div>
+</div>
+<div class="actions" style="justify-content:flex-end;">
+<button class="primary secondary" onclick="copyUpdateTextOnly()" type="button">Copy update text only</button>
+<button class="primary secondary" onclick="copyUpdateRich()" type="button">Copy banner</button>
+</div>
+<div class="toast" id="toastUpdate"></div>
+</div>
+</div>
 <div class="right-col">
 <div class="card preview-card">
-      <h2>Live message preview</h2>
-      <div class="preview-wrap">
-        <img id="previewBanner" class="preview-banner" alt="Incident alert banner">
-        <div id="output" class="preview-body"></div>
-      </div>
-    </div>
-  </div>
+<h2>Live update preview</h2>
+<div class="preview-wrap">
+<img alt="Incident update banner" class="preview-banner" id="updatePreviewBanner"/>
+<div class="preview-body" id="updateOutput"></div>
 </div>
 </div>
-<div class="tab-content" id="tab-update-panel" data-tab="update" style="display:none;">
-  <div class="main-grid">
-    <div class="left-col">
-      <div class="card" style="border-left:6px solid var(--nr-orange);">
-        <h2>Incident update</h2>
-        <div class="help">Use this tab to publish a written update against the same incident title, including contingency being applied and updated response ETAs.</div>
-
-  
-
-
-        <label>Incident title (from initial message)</label>
-        <input id="updateTitle" placeholder="(auto-filled from Initial Incident message)" disabled>
-        <div class="help">This is automatically pulled from the Initial Incident message title field.</div>
-
-        <label>Update narrative (free text)</label>
-        <textarea id="updateNarrative" rows="7" placeholder="Write a concise incident update for senior stakeholders..."></textarea>
-        <div class="section-toggle" style="margin-top:10px;">
-          <input type="checkbox" id="useStrategicPriorities">
-          <label for="useStrategicPriorities" style="margin:0;">Include strategic priorities</label>
-        </div>
-        <label>Strategic priorities (free text)</label>
-        <textarea id="strategicPriorities" rows="4" placeholder="Include 2-4 strategic level priorities (RIC)."></textarea>
-        <div class="help">Include 2-4 strategic level priorities (RIC).</div>
-
-<div class="section-toggle">
-        <input type="checkbox" id="useContingencyUpdate">
-        <label for="useContingencyUpdate" style="margin:0;">Include contingency plan</label>
-      </div>
-      <label>Contingency plan</label>
-      <textarea id="contingencyTextUpdate" rows="2" placeholder="Enter contingency plan details..."></textarea>
-<label>Priority plan (free text)</label>
-        <textarea id="priorityPlan" rows="4" placeholder="Enter the priority plan..."></textarea>
-        <div class="help">Will be included with a bold WhatsApp heading.</div>
-
-        <label>Milestone plan (free text)</label>
-        <textarea id="milestonePlan" rows="4" placeholder="Enter the milestone plan..."></textarea>
-        <div class="help">Will be included with a bold WhatsApp heading.</div>
-
-        <label>Response staff - ETA</label>
-        <div class="response-area">
-          <div class="help" style="margin-top:0;">Pre-selected from the Initial Incident message. Add additional response below if required. Initial ETAs are pulled through but can be edited.</div>
-          <div class="button-group" id="updateResponseButtons" aria-label="Response staff selection for update"></div>
-          <div class="response-eta-list" id="updateEtaContainer"></div>
-        </div>
-
-        <div class="actions" style="justify-content:flex-end;">
-          <button class="primary secondary" onclick="copyUpdateTextOnly()" type="button">Copy update text only</button>
-          <button class="primary secondary" onclick="copyUpdateRich()" type="button">Copy banner</button>
-        </div>
-        <div class="toast" id="toastUpdate"></div>
-      </div>
-    </div>
-
-    <div class="right-col">
-      <div class="card preview-card">
-        <h2>Live update preview</h2>
-        <div class="preview-wrap">
-          <img id="updatePreviewBanner" class="preview-banner" alt="Incident update banner">
-          <div id="updateOutput" class="preview-body"></div>
-        </div>
-      </div>
-    </div>
-  </div>
 </div>
-<div class="tab-content" id="tab-nwr-panel" data-tab="nwr" style="display:none;">
-    <div class="main-grid">
-      <div class="left-col">
-        <div class="card" style="border-left:6px solid #0a7a3b;">
-          <h2>Normal working resumed</h2>
-
-          <label>Time normal working resumed</label>
-          <div class="time-split">
-            <select id="nwrHour">
-              <option value="">HH</option>
-              <option value="00">00</option>
+</div>
+</div>
+<div class="tab-content" data-tab="nwr" id="tab-nwr-panel" style="display:none;">
+<div class="main-grid">
+<div class="left-col">
+<div class="card" style="border-left:6px solid #0a7a3b;">
+<h2>Normal working resumed</h2>
+<label>Time normal working resumed</label>
+<div class="time-split">
+<select id="nwrHour">
+<option value="">HH</option>
+<option value="00">00</option>
 <option value="01">01</option>
 <option value="02">02</option>
 <option value="03">03</option>
@@ -498,11 +554,11 @@ textarea{resize:vertical}
 <option value="21">21</option>
 <option value="22">22</option>
 <option value="23">23</option>
-            </select>
-            <span class="time-colon">:</span>
-            <select id="nwrMinute">
-              <option value="">MM</option>
-              <option value="00">00</option>
+</select>
+<span class="time-colon">:</span>
+<select id="nwrMinute">
+<option value="">MM</option>
+<option value="00">00</option>
 <option value="01">01</option>
 <option value="02">02</option>
 <option value="03">03</option>
@@ -562,136 +618,108 @@ textarea{resize:vertical}
 <option value="57">57</option>
 <option value="58">58</option>
 <option value="59">59</option>
-            </select>
-          </div>
-          <div class="help">Hours + minutes (1-minute intervals).</div>
-
-          
+</select>
+</div>
+<div class="help">Hours + minutes (1-minute intervals).</div>
 <div class="section-toggle" style="margin-top:10px;">
-  <input type="checkbox" id="toggleNwrContingency">
-  <label for="toggleNwrContingency" style="margin:0;">Include contingency plan withdrawn</label>
+<input id="toggleNwrContingency" type="checkbox"/>
+<label for="toggleNwrContingency" style="margin:0;">Include contingency plan withdrawn</label>
 </div>
 <label>Contingency plan withdrawn</label>
-          <textarea id="nwrContingency" rows="2"></textarea>
-
-          <label>Delays so far</label>
-          <textarea id="nwrDelays" rows="2" placeholder="Delays so far: ..."></textarea>
-
-          <div class="actions">
-            <button class="primary secondary" type="button" onclick="copyNwrTextOnly()">Copy text</button>
-            <button class="primary secondary" type="button" onclick="copyNwrRich()">Copy banner</button>
-            <button class="primary secondary" type="button" onclick="clearNwr()">Clear</button>
-          </div>
-          <div class="toast" id="toastNwr"></div>
-        </div>
-      </div>
-
-      <div class="right-col">
-        <div class="card preview-card">
-          <h2>Preview</h2>
-          <div class="preview-wrap">
-            <img id="nwrPreviewBanner" class="preview-banner" alt="Normal working resumed banner">
-            <div id="nwrOutput" class="preview-body"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  </div>
+<textarea id="nwrContingency" rows="2"></textarea>
+<label>Delays so far</label>
+<textarea id="nwrDelays" placeholder="Delays so far: ..." rows="2"></textarea>
+<div class="actions">
+<button class="primary secondary" onclick="copyNwrTextOnly()" type="button">Copy text</button>
+<button class="primary secondary" onclick="copyNwrRich()" type="button">Copy banner</button>
+<button class="primary secondary" onclick="clearNwr()" type="button">Clear</button>
 </div>
-
-
-
-<div class="tab-content" id="tab-recovery-panel" data-tab="recovery" style="display:none;">
-  <div class="main-grid">
-    <div class="left-col">
-      <div class="card" style="border-left:6px solid #1f6fb2;">
-        <h2>Service Recovery</h2>
-
-        <div class="help">Build a post-incident service recovery message for WhatsApp. Title is carried over from the Incident update.</div>
-
-        <label>Title</label>
-        <input id="recoveryTitle" placeholder="Pulled from Incident update title (editable)">
-
-        <label>DSF (XX/XX)</label>
-        <input id="recoveryDsf" placeholder="XX/XX">
-
-        
+<div class="toast" id="toastNwr"></div>
+</div>
+</div>
+<div class="right-col">
+<div class="card preview-card">
+<h2>Preview</h2>
+<div class="preview-wrap">
+<img alt="Normal working resumed banner" class="preview-banner" id="nwrPreviewBanner"/>
+<div class="preview-body" id="nwrOutput"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="tab-content" data-tab="recovery" id="tab-recovery-panel" style="display:none;">
+<div class="main-grid">
+<div class="left-col">
+<div class="card" style="border-left:6px solid #1f6fb2;">
+<h2>Service Recovery</h2>
+<div class="help">Build a post-incident service recovery message for WhatsApp. Title is carried over from the Incident update.</div>
+<label>Title</label>
+<input id="recoveryTitle" placeholder="Pulled from Incident update title (editable)"/>
+<label>DSF (XX/XX)</label>
+<input id="recoveryDsf" placeholder="XX/XX"/>
 <label>Train Operators Affected running 20 + late</label>
 <div class="card" style="background:#f7fbff; border:1px solid rgba(0,0,0,.08); padding:10px; border-radius:12px; margin-top:6px; text-align:left;">
-  <div class="help" style="margin-top:0;">Tick operators to include; enter the number of trains 20+ late.</div>
-
-  <div class="op-row">
-    <input type="checkbox" id="op_gtr" checked>
-    <label for="op_gtr" style="margin:0;">GTR - Thameslink North (MML)</label>
-    <input id="op_gtr_count" type="number" min="0" placeholder="No." >
-  </div>
-
-  <div class="op-row">
-    <input type="checkbox" id="op_emr_intercity" checked>
-    <label for="op_emr_intercity" style="margin:0;">East Midlands Intercity/Inter Urban</label>
-    <input id="op_emr_intercity_count" type="number" min="0" placeholder="No." >
-  </div>
-
-  <div class="op-row">
-    <input type="checkbox" id="op_emr_regional" checked>
-    <label for="op_emr_regional" style="margin:0;">East Midlands Regional</label>
-    <input id="op_emr_regional_count" type="number" min="0" placeholder="No." >
-  </div>
-
-  <div class="op-row">
-    <input type="checkbox" id="op_emr_local" checked>
-    <label for="op_emr_local" style="margin:0;">East Midlands Local</label>
-    <input id="op_emr_local_count" type="number" min="0" placeholder="No." >
-  </div>
-
-  <div class="op-row">
-    <input type="checkbox" id="op_xc_anglo" checked>
-    <label for="op_xc_anglo" style="margin:0;">Cross Country Anglo-Scottish</label>
-    <input id="op_xc_anglo_count" type="number" min="0" placeholder="No." >
-  </div>
-
-  <div class="op-row">
-    <input type="checkbox" id="op_xc_local" checked>
-    <label for="op_xc_local" style="margin:0;">Cross Country Local</label>
-    <input id="op_xc_local_count" type="number" min="0" placeholder="No." >
-  </div>
+<div class="help" style="margin-top:0;">Tick operators to include; enter the number of trains 20+ late.</div>
+<div class="op-row">
+<input checked="" id="op_gtr" type="checkbox"/>
+<label for="op_gtr" style="margin:0;">GTR - Thameslink North (MML)</label>
+<input id="op_gtr_count" min="0" placeholder="No." type="number"/>
 </div>
-
-
-        <label>Immediate plan going forward</label>
-        <textarea id="recoveryImmediatePlan" rows="5" placeholder="Services will be managed on a train-by-train basis..."></textarea>
-
-        <label>Service Group Recovery Target (free text lines)</label>
-        <textarea id="recoveryTargets" rows="4" placeholder="GTR - Thameslink North (MML): xx:xx&#10;East Midlands Railway: xx:xx&#10;Cross Country: xx:xx"></textarea>
-
-        <label>Time of next service recovery review (xxxx)</label>
-        <input id="recoveryNextReview" placeholder="xxxx">
-
-        <label>Additional note (free text)</label>
-        <textarea id="recoveryTyrell" rows="2" placeholder="Detailed train by train updates Via Tyrell"></textarea>
-
-        <div class="actions" style="justify-content:flex-end;">
-          <button class="primary secondary" onclick="copyRecoveryTextOnly()" type="button">Copy recovery text only</button>
-          <button class="primary secondary" onclick="copyRecoveryRich()" type="button">Copy banner</button>
-        </div>
-        <div class="toast" id="toastRecovery"></div>
-      </div>
-    </div>
-
-    <div class="right-col">
-      <div class="card preview-card">
-        <h2>Live service recovery preview</h2>
-        <div class="preview-wrap">
-          <img id="recoveryPreviewBanner" class="preview-banner" alt="Service recovery banner">
-          <div id="recoveryOutput" class="preview-body"></div>
-        </div>
-      </div>
-    </div>
-  </div>
+<div class="op-row">
+<input checked="" id="op_emr_intercity" type="checkbox"/>
+<label for="op_emr_intercity" style="margin:0;">East Midlands Intercity/Inter Urban</label>
+<input id="op_emr_intercity_count" min="0" placeholder="No." type="number"/>
 </div>
-
+<div class="op-row">
+<input checked="" id="op_emr_regional" type="checkbox"/>
+<label for="op_emr_regional" style="margin:0;">East Midlands Regional</label>
+<input id="op_emr_regional_count" min="0" placeholder="No." type="number"/>
+</div>
+<div class="op-row">
+<input checked="" id="op_emr_local" type="checkbox"/>
+<label for="op_emr_local" style="margin:0;">East Midlands Local</label>
+<input id="op_emr_local_count" min="0" placeholder="No." type="number"/>
+</div>
+<div class="op-row">
+<input checked="" id="op_xc_anglo" type="checkbox"/>
+<label for="op_xc_anglo" style="margin:0;">Cross Country Anglo-Scottish</label>
+<input id="op_xc_anglo_count" min="0" placeholder="No." type="number"/>
+</div>
+<div class="op-row">
+<input checked="" id="op_xc_local" type="checkbox"/>
+<label for="op_xc_local" style="margin:0;">Cross Country Local</label>
+<input id="op_xc_local_count" min="0" placeholder="No." type="number"/>
+</div>
+</div>
+<label>Immediate plan going forward</label>
+<textarea id="recoveryImmediatePlan" placeholder="Services will be managed on a train-by-train basis..." rows="5"></textarea>
+<label>Service Group Recovery Target (free text lines)</label>
+<textarea id="recoveryTargets" placeholder="GTR - Thameslink North (MML): xx:xx
+East Midlands Railway: xx:xx
+Cross Country: xx:xx" rows="4"></textarea>
+<label>Time of next service recovery review (xxxx)</label>
+<input id="recoveryNextReview" placeholder="xxxx"/>
+<label>Additional note (free text)</label>
+<textarea id="recoveryTyrell" placeholder="Detailed train by train updates Via Tyrell" rows="2"></textarea>
+<div class="actions" style="justify-content:flex-end;">
+<button class="primary secondary" onclick="copyRecoveryTextOnly()" type="button">Copy recovery text only</button>
+<button class="primary secondary" onclick="copyRecoveryRich()" type="button">Copy banner</button>
+</div>
+<div class="toast" id="toastRecovery"></div>
+</div>
+</div>
+<div class="right-col">
+<div class="card preview-card">
+<h2>Live service recovery preview</h2>
+<div class="preview-wrap">
+<img alt="Service recovery banner" class="preview-banner" id="recoveryPreviewBanner"/>
+<div class="preview-body" id="recoveryOutput"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
 <script>
 
 function offSelected(){
@@ -1185,7 +1213,7 @@ function applyManagedByRules(){
 
   const serviceCard = document.getElementById('serviceCard');
   const commandCard = document.getElementById('commandCard');
-  const skipCb = document.getElementById('skipServiceSection');
+  const skipCb = null;
 
   const setDisabled = (card, disabled) => {
     if(!card) return;
@@ -1217,22 +1245,8 @@ function applyManagedByRules(){
   if (typeof applySkipServiceSection === "function") applySkipServiceSection();
 }
 function applySkipServiceSection(){
-  const cb = document.getElementById('skipServiceSection');
-  const body = document.getElementById('serviceSectionBody');
-  if(!cb || !body) return;
-
-  if(cb.checked){
-    body.classList.add('disabled');
-    body.querySelectorAll('input, textarea, select, button').forEach(el=>{
-      // Do not disable the checkbox itself (it's outside body)
-      el.disabled = true;
-    });
-  } else {
-    body.classList.remove('disabled');
-    body.querySelectorAll('input, textarea, select, button').forEach(el=>{
-      el.disabled = false;
-    });
-  }
+  // legacy placeholder - no longer used
+  return;
 }
 /* Operator mapping for paragraph separation */
 function operatorForService(service) {
@@ -1309,8 +1323,6 @@ function buildMessage() {
 
   const serviceAreaKey = document.getElementById("serviceArea").value;
   const serviceAreaTitle = SERVICE_AREAS[serviceAreaKey].title;
-  const skipServiceSection = document.getElementById("skipServiceSection")?.checked;
-
   const responseNames = Object.keys(selected.responses || {});
   const responseLines = [];
   if (responseNames.length) {
@@ -1352,8 +1364,7 @@ function buildMessage() {
   if (off) {
     return { managedBy, title, desc, text };
   }
-
-  if (!skipServiceSection) {  const useSG = document.getElementById("useServiceGroups")?.checked === true;
+  const useSG = document.getElementById("useServiceGroups")?.checked === true;
   if (useSG) {
 
     text += `*Service Groups Affected (${serviceAreaTitle})*\n`;
@@ -1375,7 +1386,6 @@ function buildMessage() {
     }
     text += "*Response Deployed*\n";
     text += (responseLines.length ? responseLines.join("\n") : "TBC") + "\n\n";
-  }
 
   text += "*Command Structure*\n";
   text += (roleLines.length ? roleLines.join("\n") : "None selected");
@@ -1404,13 +1414,13 @@ function validate() {
   // Off-route requires Managed by to be set
   if (isOffRoute && !managedBy) errors.push("Managed by");
 
-  // East Midlands (or blank) requires RIC + TIC selected + named
+  // East Midlands (or blank) requires + selected + named
   if (!isOffRoute) {
     const ric = selected?.roles?.ric;
     const tic = selected?.roles?.tic;
 
-    if (!ric || !ric.selected || !(ric.name || "").trim()) errors.push("RIC");
-    if (!tic || !tic.selected || !(tic.name || "").trim()) errors.push("TIC");
+    if (!ric || !ric.selected || !(ric.name || "").trim()) errors.push("");
+    if (!tic || !tic.selected || !(tic.name || "").trim()) errors.push("");
   }
 
   return errors;
@@ -1423,8 +1433,7 @@ function generate() {
 
   if (errors.length) {
     toast.className = "toast warn";
-    toast.textContent = "Missing / required: " + errors.join(" ");
-  } else {
+    toast.textContent = "Missing / required: " + errors.join(" "); } else {
     toast.className = "toast";
     toast.textContent = "";
   }
@@ -1536,8 +1545,6 @@ setTab = function(tabName){
 
 
 /* Init */
-initRoles();
-
 // Create a minimal role editor via prompt on click? Provide quick edit buttons?
 // To keep v5 focused, we add a compact inline editor using browser prompts.
 
@@ -1557,10 +1564,17 @@ generate();
 
 // Live preview bindings
 (function initSkipService(){
-  const cb = document.getElementById('skipServiceSection');
+  const cb = document.getElementById('useServiceGroups');
   if(!cb) return;
-  cb.addEventListener('change', ()=>{ applySkipServiceSection(); generate(); });
-  applySkipServiceSection();
+  cb.addEventListener('change', ()=>{ applyServiceGroupsVisibility(); generate(); });
+  applyServiceGroupsVisibility();
+
+  // Contingency (initial tab) listeners
+  const cbCP = document.getElementById('useContingencyInit');
+  if (cbCP) cbCP.addEventListener('change', ()=>{ try{ applyContingencyInitVisibility(); }catch(e){} generate(); });
+  const txCP = document.getElementById('contingencyTextInit');
+  if (txCP) txCP.addEventListener('input', ()=>{ generate(); });
+  try{ applyContingencyInitVisibility(); }catch(e){}
 })();
 
 ['title','description','strandedFree'].forEach(id=>{
@@ -1897,7 +1911,7 @@ function clearAll() {
   });
 
   // Checkboxes
-  ["noStranded","skipServiceSection"].forEach(id => {
+  ["noStranded",""].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.checked = false;
   });
@@ -2315,6 +2329,14 @@ function applyServiceGroupsVisibility(){
   sec.style.display = cb.checked ? "" : "none";
 }
 
+
+function applyContingencyInitVisibility(){
+  const cb = document.getElementById("useContingencyInit");
+  const tx = document.getElementById("contingencyTextInit");
+  if (!cb || !tx) return;
+  tx.style.display = cb.checked ? "" : "none";
+}
+  
 function applyStrandedVisibility(){
   const cb = document.getElementById("useStranded");
   const free = document.getElementById("strandedFree");
@@ -2324,6 +2346,40 @@ function applyStrandedVisibility(){
   if (opts) opts.style.display = on ? "" : "none";
   if (free) free.disabled = on ? false : true;
 }
+
+// Initialise all tabs + visibility + listeners
+(function(){
+  try{ initRoles(); }catch(e){}
+  try{ initSkipService(); }catch(e){}
+  try{ initNoStranded(); }catch(e){}
+  try{ initUpdateTabV60(); }catch(e){}
+  try{ initNwr(); }catch(e){}
+  try{ initRecoveryTab(); }catch(e){}
+  try{ applyServiceGroupsVisibility(); }catch(e){}
+  try{ applyStrandedVisibility(); }catch(e){}
+  try{ applyContingencyInitVisibility(); }catch(e){}
+  try{ generate(); }catch(e){}
+})();
+
+</script>
+
+<script>
+function setSeverityTheme(){
+  const sel = document.getElementById("severity");
+  if(!sel) return;
+  const val = sel.value.toLowerCase();
+  document.body.classList.remove("sev-red","sev-black");
+  if(val === "red") document.body.classList.add("sev-red");
+  if(val === "black") document.body.classList.add("sev-black");
+}
+
+document.addEventListener("DOMContentLoaded", function(){
+  const sel = document.getElementById("severity");
+  if(sel){
+    sel.addEventListener("change", setSeverityTheme);
+    setSeverityTheme();
+  }
+});
 </script>
 </body>
 </html>
