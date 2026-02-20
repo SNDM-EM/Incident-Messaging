@@ -295,14 +295,20 @@ textarea{resize:vertical}
       <h2>Service, Stranded Trains & Response</h2>
 
       <div class="section-toggle">
-        <input id="skipServiceSection" type="checkbox" checked>
+        <input id="skipServiceSection" type="checkbox">
         <div>
           <div class="label">Not required for this incident</div>
           <div class="hint">Greys out this section and removes it from the generated message.</div>
         </div>
       </div>
       <div id="serviceSectionBody">
-      <label>Service groups area</label>
+      <div class="section-toggle" style="margin-top:6px;">
+        <input type="checkbox" id="useServiceGroups">
+        <label for="useServiceGroups" style="margin:0;">Service groups</label>
+      </div>
+
+      <div id="serviceGroupsSection">
+<label>Service groups area</label>
       <select id="serviceArea" onchange="onServiceAreaChange()">
         <option value="DNL">Derby / Nottingham / Leicester</option>
         <option value="LSS">Lincoln / Sleaford / Skegness</option>
@@ -313,6 +319,7 @@ textarea{resize:vertical}
       </div>
 </div>
       <div class="service-subtle">All services are selected by default. Deselect any that are not affected. Switching area will reset selections.</div>
+</div>
 <div class="section-toggle">
         <input type="checkbox" id="useContingencyInit">
         <label for="useContingencyInit" style="margin:0;">Include contingency plan</label>
@@ -325,7 +332,7 @@ textarea{resize:vertical}
       <div class="stranded-box">
         <div style="display:flex;gap:10px;align-items:center;margin:2px 0 10px 0;">
           <input id="useStranded" type="checkbox" style="width:auto;margin:0;">
-          <div style="font-weight:900;font-size:12px;">Include Stranded Trains</div>
+          <div style="font-weight:900;font-size:12px;">Stranded Trains</div>
         </div>
 
         <label style="margin-top:0;">Headcodes / number of trains (free text)</label>
@@ -1346,9 +1353,13 @@ function buildMessage() {
     return { managedBy, title, desc, text };
   }
 
-  if (!skipServiceSection) {
+  if (!skipServiceSection) {  const useSG = document.getElementById("useServiceGroups")?.checked === true;
+  if (useSG) {
+
     text += `*Service Groups Affected (${serviceAreaTitle})*\n`;
     text += buildServiceGroupsText(serviceAreaTitle) + "\n\n";
+  }
+
 
     const useCP = document.getElementById("useContingencyInit")?.checked !== false;
     const cp = (document.getElementById("contingencyTextInit")?.value || "").trim();
@@ -1356,15 +1367,12 @@ function buildMessage() {
       text += "*Contingency Plan*\n";
       text += cp + "\n\n";
     }
-
-    
     const useStranded = document.getElementById("useStranded")?.checked === true;
     if (useStranded) {
       text += "*Stranded Trains*\n";
       text += (strandedFree || "TBC") + "\n";
       text += buildStrandedOptionsText() + "\n\n";
     }
-
     text += "*Response Deployed*\n";
     text += (responseLines.length ? responseLines.join("\n") : "TBC") + "\n\n";
   }
@@ -1538,17 +1546,8 @@ renderStrandedOptions();
 // No stranded trains toggle
 (function initNoStranded(){
   const cb = document.getElementById('useStranded');
-  const free = document.getElementById('strandedFree');
-  const opts = document.getElementById('strandedOptions');
   if(!cb) return;
-
-  const apply = () => {
-    const on = cb.checked;
-    if (opts) opts.style.display = on ? "none" : "";
-    if (free) free.disabled = on ? true : false;
-    generate();
-  };
-
+  const apply = () => { applyStrandedVisibility(); generate(); };
   cb.addEventListener('change', apply);
   apply();
 })();
@@ -1898,7 +1897,7 @@ function clearAll() {
   });
 
   // Checkboxes
-  ["useStranded","skipServiceSection"].forEach(id => {
+  ["noStranded","skipServiceSection"].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.checked = false;
   });
@@ -2307,6 +2306,23 @@ function escapeHtml(str){
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#39;");
+}
+
+function applyServiceGroupsVisibility(){
+  const cb = document.getElementById("useServiceGroups");
+  const sec = document.getElementById("serviceGroupsSection");
+  if (!cb || !sec) return;
+  sec.style.display = cb.checked ? "" : "none";
+}
+
+function applyStrandedVisibility(){
+  const cb = document.getElementById("useStranded");
+  const free = document.getElementById("strandedFree");
+  const opts = document.getElementById("strandedOptions");
+  if (!cb) return;
+  const on = cb.checked;
+  if (opts) opts.style.display = on ? "" : "none";
+  if (free) free.disabled = on ? false : true;
 }
 </script>
 </body>
