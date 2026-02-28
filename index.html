@@ -6,6 +6,9 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <title>Network Rail - Incident Message Builder</title>
 <style>
+
+/* Safety: hide any debug/code output blocks if present */
+#codeDump, #debugDump, .code-dump, .debug-dump { display:none !important; }
 .time-split{display:flex;align-items:center;gap:8px;}
 .time-split select{width:120px;}
 .time-colon{font-weight:700;}
@@ -831,7 +834,7 @@ button, .btn{
 </div>
 <label>Contingency plan withdrawn</label>
 <textarea id="nwrContingency" rows="2"></textarea>
-<label>Update Narrative</label>
+<label>Update</label>
 <textarea id="nwrNarrative" placeholder="Free text narrative update" rows="3"></textarea>
 <div class="section-toggle" style="margin-top:10px;">
   <input id="toggleNwrPostItsr" type="checkbox" checked/>
@@ -1530,7 +1533,7 @@ function renderEtaInputs() {
 
 function applyManagedByRules(){
   const managedBy = document.getElementById('managedBy')?.value?.trim();
-  const off = !!(managedBy && managedBy !== "East Midlands Route");
+  const off = !!(managedBy && managedBy !== "East Midlands Route" && managedBy !== "Major Incident Alert");
 
   const serviceCard = document.getElementById('serviceCard');
   const commandCard = document.getElementById('commandCard');
@@ -1636,7 +1639,7 @@ function buildStrandedOptionsText() {
 /* Build message in new required order */
 function buildMessage() {
   const managedBy = document.getElementById("managedBy").value.trim();
-  const off = !!(managedBy && managedBy !== "East Midlands Route");
+  const off = !!(managedBy && managedBy !== "East Midlands Route" && managedBy !== "Major Incident Alert");
   const rawTitle = document.getElementById("title").value.trim();
   const title = formatTitle(rawTitle);
   const desc = document.getElementById("description").value.trim();
@@ -1723,7 +1726,7 @@ function validate() {
   const errors = [];
 
   const managedBy = (document.getElementById("managedBy")?.value || "").trim();
-  const isOffRoute = !!(managedBy && managedBy !== "East Midlands Route");
+  const isOffRoute = !!(managedBy && managedBy !== "East Midlands Route" && managedBy !== "Major Incident Alert");
 
   const title = (document.getElementById("title")?.value || "").trim();
   const desc = (document.getElementById("description")?.value || "").trim();
@@ -1771,15 +1774,13 @@ async function copyRich() {
     toast.textContent = "Fix required items before copying with banner.";
     return;
   }
-const plain = document.getElementById("output").innerText;
+  const plain = document.getElementById("output").innerText;
 
-  let bannerSrc = BANNERS[severity];
-  if (managedBy && managedBy !== "East Midlands Route") {
-    const off = OFF_ROUTE_BANNERS[managedBy];
-    if (off) bannerSrc = off;
-  }
+  // Always copy whatever banner is currently rendered in the live preview
+  const bannerEl = document.getElementById("previewBanner");
+  const bannerSrc = (bannerEl && bannerEl.src) ? bannerEl.src : "";
 
-  try {
+try {
     const blob = await (await fetch(bannerSrc)).blob();
     await navigator.clipboard.write([
       new ClipboardItem({
@@ -2357,7 +2358,7 @@ function buildNwrText(){
   }
 
   if (narrative) {
-    lines.push("Update Narrative:");
+    lines.push("Update:");
     lines.push(narrative);
     lines.push("");
   }
