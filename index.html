@@ -2504,6 +2504,7 @@ function buildUpdateText(){
   const milestonePlan = (document.getElementById("milestonePlan")?.value || "").trim();
 
   const lines = [];
+  const strategicNotes = (document.getElementById("priorityPlan")?.value || "").trim();
 
   // Title
   lines.push(title ? `*${title}*` : "*Incident title required*");
@@ -2522,6 +2523,7 @@ function buildUpdateText(){
       lines.push("*Strategic priorities*");
       if (selectedBlock) {
         selectedBlock.split("\n").forEach(l => lines.push(l));
+    if (strategicNotes) lines.push(strategicNotes);
       }
       if (sp) {
         if (selectedBlock) lines.push("");
